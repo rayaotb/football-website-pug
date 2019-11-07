@@ -1,3 +1,8 @@
+//NOTE whenever you edit this page make sure you're in repo and go on terminal and put 
+//clear && node server.js
+//ORR
+// node server.js
+// if you want to escape then ctrl-c
 /***********************
  
   Load Components!
