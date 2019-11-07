@@ -1,0 +1,82 @@
+//- player-info.pug
+//- NOTICE IMPORTANT have your comments indented the same
+include ../partials/header.pug
+include ../partials/menu.pug
+
+div.container
+  br
+  div.row
+    div.col-4
+      div.card
+        //- TODO: Modify the pug code below to conditionally set the image_src
+        //- notice the dashes means it's native javascript
+        if result_2
+          - var image_src = '../' +result_2.img_src
+        else
+          - var image_src = '../../resources/img/helmet.jpg'
+
+        img.card-img-top#player_img(src=image_src, alt="Football Player")
+        div.card-body.mx-auto
+          // go to select_player form if the user picks a player
+          form.form(action="/player_info/select_player", method="get")
+            // player_choice is the name of what they choose
+            select.custom-select(name="player_choice", onchange="this.form.submit()")
+              option(selected) Select Player
+              // make a for loop to traverse through result_1 and get the players name for drop down menu
+              for item in result_1
+                // you have to dereferance item.name or it would show "item.name" in drop down menu
+                option(value=item.id) #{item.name}
+              //- Populate the select with player options. Set the value to the player's id and display the player's name.
+    div.col-8
+      div.table-responsive
+        table.table
+          //-  Set the player's information. On select, fill in the player's information in each of the field below. You will need to calculate the average rushing, receiving, and passing yards.
+          tr
+            th Year
+            if result_2 && result_1
+              td #{result_2.year}
+            else
+              td ?
+          tr
+            th Major
+            if result_2
+              td #{result_2.major}
+            else
+              td ?
+          tr
+            th Games Played
+            if result_3
+              td #{result_3.count}
+            else
+              td ?
+          tr
+            if result_2
+              td Passing Yards: #{result_2.passing_yards}
+              //dereference result 3 rushing yards and then divide that by result_3.count (games played for that particular player)
+            if result_3 && result_2
+              // NOTE if you want to round then use #{(Math.round(result_2.passing_yards / result_3.count * 100) /100)}
+              // ELSE if you want it displayed as a float number then use #{result_2.passing_yards / result_3.count}
+              td Avg. Passing Yards: #{ (Math.round(result_2.passing_yards / result_3.count * 100) /100) }
+            else
+              td ?
+          tr
+            if result_2
+              // NOTE if you want to round then use (Math.round(result_2.rushing_yards / result_3.count * 100) /100)
+              td Rushing Yards: #{result_2.rushing_yards}
+            if result_3 && result_2
+              // NOTE if you want to round to 2 decimal places then use #{(Math.round(result_2.rushing_yards / result_3.count * 100) /100)} if you want to round to 3 then *1000 if you want it rounded to a whole number then you don't multiply by 100 and you dont divide by 100
+              // ELSE if you want it displayed as a float number then use #{result_2.rushing_yards / result_3.count}
+              td Avg. Rushing Yards:  #{(Math.round(result_2.rushing_yards / result_3.count * 100)/100)}
+              //* 100) /100)}
+          tr
+            if result_2
+              td Receiving Yards: #{result_2.receiving_yards}
+              //dereference result 3 rushing yards and then divide that by result_3.count (games played for that particular player)
+            if result_3 && result_2
+              // NOTE if you want to round to 2 decimal places then use #{(Math.round(result_2.receiving_yards / result_3.count * 100) /100)}
+              // ELSE if you want it displayed as a float number then use #{result_2.receiving_yards / result_3.count}
+              td Avg. Receiving Yards: #{(Math.round(result_2.receiving_yards / result_3.count * 100) /100) }
+            else
+              td ?
+
+include ../partials/footer.pug
